@@ -27,6 +27,28 @@ Run locally: `npx http-server .` and open http://localhost:8080.
   "Zeitliche Verkaufseinschränkungen für Alkohol" (retrieved 3 Oct 2026).
 - All links were checked in October 2026. Re-check before major updates.
 
+## Erfahrungen (Firebase Firestore)
+
+`erfahrungen.html` + `assets/js/erfahrungen.js` let visitors submit anonymous experience reports.
+
+- Collection `erfahrungen`. New documents always have `status: "pending"`.
+- Only documents with `status: "approved"` are public. **Moderation:** Firebase console →
+  Firestore → `erfahrungen` → open a document → change `status` to `approved` (or delete it).
+- Security is enforced by `firestore.rules` (create-only for visitors, field and length validation,
+  no updates/deletes from the browser). The Firebase web config in the JS is public by design.
+- No Analytics, no names, no e-mail. Honeypot + 2-minute client throttle against spam.
+
+### Deploy
+
+Rules (required, otherwise loading/submitting fails with "Missing or insufficient permissions"):
+Firebase console → Firestore Database → Rules → paste `firestore.rules` → Publish.
+
+Automatic deploy: `.github/workflows/firebase-deploy.yml` deploys Hosting + rules + indexes on every
+push to `main`. Add the repository secret `FIREBASE_SERVICE_ACCOUNT` (service account JSON key for
+project `alkohol-2ae09`).
+
+Manual: `npx firebase-tools login` then `npx firebase-tools deploy --project alkohol-2ae09`.
+
 ## Before publishing
 
 - [ ] Complete Datenschutz and Impressum; name the responsible organisation.

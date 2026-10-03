@@ -1,0 +1,42 @@
+rules_version = '2';
+
+// Erfahrungsberichte: anonym, moderiert.
+// - Jede Person darf einen neuen Bericht anlegen (Status immer "pending").
+// - Öffentlich lesbar sind nur Berichte mit Status "approved".
+// - Freigeben, Bearbeiten und Löschen nur über die Firebase-Konsole (Admin).
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /erfahrungen/{id} {
+      allow read: if resource.data.status == 'approved';
+
+      allow create: if
+        request.resource.data.keys().hasOnly(
+          ['text', 'verbindung', 'kategorie', 'perspektive', 'alter', 'kanton', 'consent', 'status', 'createdAt'])
+        && request.resource.data.keys().hasAll(['text', 'kategorie', 'perspektive', 'consent', 'status', 'createdAt'])
+        && request.resource.data.status == 'pending'
+        && request.resource.data.consent == true
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.text is string
+        && request.resource.data.text.size() >= 40
+        && request.resource.data.text.size() <= 3000
+        && (!('verbindung' in request.resource.data) ||
+            (request.resource.data.verbindung is string && request.resource.data.verbindung.size() <= 200))
+        && request.resource.data.kategorie in
+           ['gewalt', 'familie', 'gesundheit', 'verkehr', 'arbeit', 'freundeskreis', 'eigener-konsum', 'anderes']
+        && request.resource.data.perspektive in
+           ['selbst', 'angehoerige', 'beobachtung', 'fachperson']
+        && (!('alter' in request.resource.data) ||
+            request.resource.data.alter in ['', 'unter-18', '18-25', '26-40', '41-60', '60-plus'])
+        && (!('kanton' in request.resource.data) ||
+            request.resource.data.kanton in ['', 'AG','AI','AR','BE','BL','BS','FR','GE','GL','GR','JU','LU','NE','NW','OW','SG','SH','SO','SZ','TG','TI','UR','VD','VS','ZG','ZH']);
+
+      allow update, delete: if false;
+    }
+
+    // Alles andere ist gesperrt.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

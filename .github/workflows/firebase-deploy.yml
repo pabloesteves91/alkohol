@@ -1,0 +1,26 @@
+# Deploys the static site (Firebase Hosting) and the Firestore rules/indexes on every push to main.
+# Requires the repository secret FIREBASE_SERVICE_ACCOUNT (JSON key of a service account in
+# project alkohol-2ae09 with the roles "Firebase Hosting Admin" and "Firebase Rules Admin"
+# plus "Cloud Datastore Index Admin").
+name: Deploy to Firebase
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.repository == 'pabloesteves91/alkohol' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Write service account
+        run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' > "$RUNNER_TEMP/sa.json"
+      - name: Deploy hosting, rules and indexes
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ runner.temp }}/sa.json
+        run: npx --yes firebase-tools@13 deploy --project alkohol-2ae09 --only hosting,firestore:rules,firestore:indexes --non-interactive

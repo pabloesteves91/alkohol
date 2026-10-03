@@ -299,7 +299,7 @@
   }
 
   /* ---------- Source library: filter + highlight on jump ---------- */
-  var chips = $$('.chip');
+  var chips = $$('.src-filter:not(.ex-filter) .chip');
   var rows = $$('.sources tbody tr');
   function filter(cat) {
     chips.forEach(function (c) {
