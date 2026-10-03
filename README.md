@@ -52,6 +52,6 @@ Manual: `npx firebase-tools login` then `npx firebase-tools deploy --project alk
 
 ## Before publishing
 
-- [ ] Complete Datenschutz and Impressum; name the responsible organisation.
+- [ ] Add contact e-mail in impressum.html and datenschutz.html (marked [folgt]).
 - [ ] Self-host fonts (Inter, Inter Tight, IBM Plex Mono) instead of Google Fonts, or mention it in the privacy notice.
 - [ ] Replace `https://example.ch/` in Open Graph tags; regenerate `og-image.png` and the PDF after text changes.
