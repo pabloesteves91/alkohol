@@ -194,7 +194,7 @@
     });
     // Links to #petitionstext from the support area should show the full text
     $$('a[href="#petitionstext"]').forEach(function (a) {
-      if (a.closest('.form, .checklist')) a.addEventListener('click', function () {
+      if (a.closest('.checklist')) a.addEventListener('click', function () {
         docBody.classList.remove('is-collapsed');
         docBtn.setAttribute('aria-expanded', 'true');
         docBtn.textContent = 'Text einklappen';
@@ -313,35 +313,4 @@
     });
   });
 
-  /* ---------- Support form (prototype: no data is sent or stored) ---------- */
-  var form = $('#support-form');
-  if (form) {
-    var err = $('.form__error', form), statusEl = $('.form__status', form);
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      var problems = [];
-      $$('input', form).forEach(function (inp) {
-        var bad = !inp.checkValidity();
-        inp.setAttribute('aria-invalid', bad ? 'true' : 'false');
-        if (bad) problems.push(inp);
-      });
-      if (problems.length) {
-        var first = problems[0];
-        var label = $('label[for="' + first.id + '"]', form);
-        var name = label ? label.textContent.replace('optional', '').trim() : 'Feld';
-        err.textContent = first.type === 'checkbox'
-          ? 'Bitte bestätigen Sie, dass Sie den Petitionstext gelesen haben.'
-          : 'Bitte prüfen Sie das Feld «' + name + '».';
-        first.focus();
-        return;
-      }
-      err.textContent = '';
-      // TODO(backend): POST to the real endpoint; show the server's confirmation.
-      statusEl.textContent = 'Prototyp: Es wurden keine Daten übermittelt oder gespeichert. Formular vor Veröffentlichung mit dem Backend verbinden.';
-    });
-    $$('input', form).forEach(function (inp) {
-      inp.addEventListener('input', function () { if (inp.getAttribute('aria-invalid') === 'true' && inp.checkValidity()) inp.setAttribute('aria-invalid', 'false'); });
-      inp.addEventListener('change', function () { if (inp.checkValidity()) inp.setAttribute('aria-invalid', 'false'); });
-    });
-  }
 })();

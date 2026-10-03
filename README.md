@@ -9,7 +9,7 @@ petition.html           Print version of the petition text (source of the PDF)
 datenschutz.html        Privacy notice (draft)
 impressum.html          Legal notice / contact (draft)
 assets/css/style.css    Design system + layout
-assets/js/main.js       Progressive enhancement (menu, reveal, counters, accordions, canton map, tabs, filter, form)
+assets/js/main.js       Progressive enhancement (menu, reveal, counters, accordions, canton map, tabs, source filter)
 assets/petitionstext.pdf  Generated from petition.html
 assets/img/             favicon.svg, og-image.svg (+ .png export)
 ```
@@ -25,8 +25,8 @@ Everything marked in the UI with **PRÜFEN**, **[zu verifizieren]**, **JJJJ** or
 - [ ] Verify cantonal night-sale rules (GE, FR, VD and all others) in `assets/js/main.js` → `status` and the detail fields.
 - [ ] Verify country facts (SE, SCO, LV, NO) and add research summaries only with citations.
 - [ ] EBG source and victim-support contacts in section 06.
-- [ ] **Support counter: CONNECT TO REAL DATABASE DATA BEFORE PUBLISHING.** `XX’XXX` is a placeholder — never show an invented number.
-- [ ] Connect the form to a backend (`TODO(backend)` in `main.js`). Currently nothing is sent or stored.
+- [ ] Signing happens only on Campax: https://act.campax.org/petitions/alkohol-ist-kein-gewohnliches-konsumgut-strengere-regeln-fur-die-schweiz — the site collects no data. If a signature count is ever shown, take it from Campax; never invent one.
+- [ ] Copy the full wording of demand 10 and the justification from Campax into `index.html` / `petition.html`.
 - [ ] Complete Datenschutz (revDSG) and Impressum; name the responsible organisation.
 - [ ] Self-host fonts (Inter, Inter Tight, IBM Plex Mono) instead of Google Fonts, or mention it in the privacy notice.
 - [ ] Replace `https://example.ch/` in Open Graph tags; regenerate `og-image.png` and the PDF after text changes.
