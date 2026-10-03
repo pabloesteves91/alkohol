@@ -1,0 +1,11 @@
+<!-- PLACEHOLDER social preview (1200x630). Export as og-image.png before publishing. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#F4F1EA"/>
+  <rect x="0" y="0" width="1200" height="8" fill="#E32219"/>
+  <text x="60" y="90" font-family="IBM Plex Mono, monospace" font-size="22" fill="#111" letter-spacing="2">EINE DEBATTE ÜBER ALKOHOLPOLITIK IN DER SCHWEIZ</text>
+  <text x="52" y="330" font-family="Inter Tight, Helvetica Neue, Arial, sans-serif" font-weight="900" font-size="190" letter-spacing="-10" fill="#111">ALKOHOL</text>
+  <text x="52" y="500" font-family="Inter Tight, Helvetica Neue, Arial, sans-serif" font-weight="900" font-size="150" letter-spacing="-8" fill="#111">IST ÜBERALL<tspan fill="#E32219">.</tspan></text>
+  <line x1="60" y1="560" x2="1140" y2="560" stroke="#111" stroke-width="2"/>
+  <text x="60" y="598" font-family="IBM Plex Mono, monospace" font-size="20" fill="#111">FORDERUNGEN · QUELLEN · GEGENARGUMENTE</text>
+  <text x="1140" y="598" text-anchor="end" font-family="Inter Tight, Arial, sans-serif" font-weight="900" font-size="26" fill="#111">ALKOHOL<tspan fill="#E32219">?</tspan></text>
+</svg>
