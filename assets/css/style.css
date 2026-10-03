@@ -1229,6 +1229,13 @@ body.menu-open { overflow: hidden; }
   .prolog__note { margin-left: calc((100% + var(--gap)) / 12); }
 }
 
+
+/* ---------- Scene quote in demands ---------- */
+.scene { grid-column: 1 / -1; margin: 4px 0 20px; padding: 20px 0 20px 20px; border-left: 4px solid var(--red); max-width: 40rem; }
+.scene p { font-family: var(--f-display); font-weight: 500; font-size: clamp(1.15rem, 1.8vw, 1.5rem); line-height: 1.35; }
+.scene p + p { margin-top: .5em; }
+.scene__q { font-weight: 800 !important; color: var(--red); }
+
 /* ---------- Motion ---------- */
 
 .js .reveal { opacity: 0; transform: translateY(28px); transition: opacity .9s var(--ease), transform .9s var(--ease); }

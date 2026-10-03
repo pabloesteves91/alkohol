@@ -34,7 +34,7 @@ const $$ = (s, c = document) => Array.from(c.querySelectorAll(s));
 
 const LABELS = {
   kategorie: {
-    gewalt: 'Gewalt', familie: 'Familie & Beziehung', gesundheit: 'Gesundheit', verkehr: 'Verkehr',
+    gewalt: 'Gewalt', familie: 'Familie & Beziehung', gesundheit: 'Gesundheit', verkehr: 'Verkehr', verkauf: 'Verkauf',
     arbeit: 'Arbeit', freundeskreis: 'Ausgang & Freundeskreis', 'eigener-konsum': 'Eigener Konsum', anderes: 'Anderes'
   },
   perspektive: {

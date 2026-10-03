@@ -23,7 +23,7 @@ service cloud.firestore {
         && (!('verbindung' in request.resource.data) ||
             (request.resource.data.verbindung is string && request.resource.data.verbindung.size() <= 200))
         && request.resource.data.kategorie in
-           ['gewalt', 'familie', 'gesundheit', 'verkehr', 'arbeit', 'freundeskreis', 'eigener-konsum', 'anderes']
+           ['gewalt', 'familie', 'gesundheit', 'verkehr', 'verkauf', 'arbeit', 'freundeskreis', 'eigener-konsum', 'anderes']
         && request.resource.data.perspektive in
            ['selbst', 'angehoerige', 'beobachtung', 'fachperson']
         && (!('alter' in request.resource.data) ||
