@@ -1,26 +1,33 @@
-# Deploys the static site (Firebase Hosting) and the Firestore rules/indexes on every push to main.
-# Requires the repository secret FIREBASE_SERVICE_ACCOUNT (JSON key of a service account in
-# project alkohol-2ae09 with the roles "Firebase Hosting Admin" and "Firebase Rules Admin"
-# plus "Cloud Datastore Index Admin").
-name: Deploy to Firebase
+# Publishes the Firestore security rules and indexes on every push to main.
+# The website itself is served by GitHub Pages.
+# Optional: add the repository secret FIREBASE_SERVICE_ACCOUNT (JSON key of a service account in
+# project alkohol-2ae09 with "Firebase Rules Admin" and "Cloud Datastore Index Admin").
+# Without the secret the job is skipped; publish firestore.rules manually in the Firebase console.
+name: Deploy Firestore rules
 
 on:
   push:
     branches: [main]
+    paths: [firestore.rules, firestore.indexes.json, firebase.json, .github/workflows/firebase-deploy.yml]
   workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    if: ${{ github.repository == 'pabloesteves91/alkohol' }}
+    env:
+      SA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
     steps:
+      - name: Skip without credentials
+        if: env.SA == ''
+        run: echo "::notice::FIREBASE_SERVICE_ACCOUNT not set - publish firestore.rules in the Firebase console."
       - uses: actions/checkout@v4
+        if: env.SA != ''
       - uses: actions/setup-node@v4
+        if: env.SA != ''
         with:
-          node-version: 20
-      - name: Write service account
-        run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' > "$RUNNER_TEMP/sa.json"
-      - name: Deploy hosting, rules and indexes
-        env:
-          GOOGLE_APPLICATION_CREDENTIALS: ${{ runner.temp }}/sa.json
-        run: npx --yes firebase-tools@13 deploy --project alkohol-2ae09 --only hosting,firestore:rules,firestore:indexes --non-interactive
+          node-version: 22
+      - name: Deploy rules and indexes
+        if: env.SA != ''
+        run: |
+          printf '%s' "$SA" > "$RUNNER_TEMP/sa.json"
+          GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/sa.json" npx --yes firebase-tools@13 deploy --project alkohol-2ae09 --only firestore:rules,firestore:indexes --non-interactive

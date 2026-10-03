@@ -43,9 +43,10 @@ Run locally: `npx http-server .` and open http://localhost:8080.
 Rules (required, otherwise loading/submitting fails with "Missing or insufficient permissions"):
 Firebase console → Firestore Database → Rules → paste `firestore.rules` → Publish.
 
-Automatic deploy: `.github/workflows/firebase-deploy.yml` deploys Hosting + rules + indexes on every
-push to `main`. Add the repository secret `FIREBASE_SERVICE_ACCOUNT` (service account JSON key for
-project `alkohol-2ae09`).
+Website: served by GitHub Pages (https://pabloesteves91.github.io/alkohol/).
+
+Optional automatic rules deploy: `.github/workflows/firebase-deploy.yml` publishes rules + indexes when
+they change on `main`, if the repository secret `FIREBASE_SERVICE_ACCOUNT` is set; otherwise it skips.
 
 Manual: `npx firebase-tools login` then `npx firebase-tools deploy --project alkohol-2ae09`.
 
