@@ -203,8 +203,8 @@
   }
 
   /* ---------- 22:00 — cantons ---------- */
-  // STATUS IS SCHEMATIC. Verify every entry against current cantonal law before publishing.
-  var V = '[zu verifizieren]';
+  // Wortlaut gemäss BAG-Übersicht «Zeitliche Verkaufseinschränkungen für Alkohol»
+  // https://www.bag.admin.ch/de/zeitliche-verkaufseinschraenkungen-fuer-alkohol (abgerufen 3.10.2026)
   var cantons = [
     ['BS', 'Basel-Stadt', 3, 1], ['BL', 'Basel-Landschaft', 4, 1], ['SH', 'Schaffhausen', 6, 1], ['TG', 'Thurgau', 7, 1],
     ['JU', 'Jura', 2, 2], ['SO', 'Solothurn', 3, 2], ['AG', 'Aargau', 4, 2], ['ZH', 'Zürich', 5, 2], ['SG', 'St. Gallen', 6, 2], ['AR', 'Appenzell A. Rh.', 7, 2], ['AI', 'Appenzell I. Rh.', 8, 2],
@@ -212,45 +212,54 @@
     ['VD', 'Waadt', 1, 4], ['FR', 'Freiburg', 2, 4], ['OW', 'Obwalden', 3, 4], ['NW', 'Nidwalden', 4, 4], ['UR', 'Uri', 5, 4], ['GR', 'Graubünden', 6, 4],
     ['GE', 'Genf', 1, 5], ['VS', 'Wallis', 2, 5], ['TI', 'Tessin', 4, 5]
   ];
-  var status = { GE: 'yes', FR: 'yes', VD: 'part' };
-  var statusText = {
-    yes: 'Nächtliche Einschränkung vorhanden',
-    part: 'Nächtliche Einschränkung für bestimmte Kategorien',
-    'var': 'Regeln variieren – zu prüfen'
+  var rules = {
+    GE: ['yes', 'Der Verkauf alkoholhaltiger Getränke zum Mitnehmen oder kostenlose Abgabe ist von 21.00 – 07.00 Uhr verboten.'],
+    FR: ['yes', 'Der Verkauf alkoholhaltiger Getränke zum Mitnehmen ist nach 22.00 Uhr verboten.'],
+    VD: ['part', 'Der Verkauf zum Mitnehmen und die Lieferung von Spirituosen und Bier sind zwischen 21.00 und 6.00 Uhr verboten. Die Gemeinden dürfen diese Regelung ab 20.00 Uhr verschärfen.'],
+    NE: ['part', 'Spirituosenverkauf erst ab 9.00 Uhr. Der Verkauf zum Mitnehmen und die Lieferung von Spirituosen sind ab 19 Uhr verboten.'],
+    BS: ['gastro', 'Verkaufsverbot von Bier und Wein an unter 18-Jährige von 24.00 – 07.00 Uhr im Gastgewerbe.']
   };
+  var statusText = {
+    yes: 'Nachts kein Verkauf zum Mitnehmen',
+    part: 'Einschränkung für bestimmte Getränke',
+    gastro: 'Nur Gastgewerbe, unter 18-Jährige',
+    no: 'Keine zeitliche Verkaufseinschränkung'
+  };
+  function ruleOf(code) { return rules[code] || ['no', 'Gemäss BAG-Übersicht keine kantonale zeitliche Einschränkung des Alkoholverkaufs.']; }
   var mapEl = $('.cantons__map');
   var detail = $('.cantons__detail');
   function showCanton(c, btn) {
-    var st = status[c[0]] || 'var';
+    var r = ruleOf(c[0]);
     $('.cantons__name', detail).textContent = c[1];
-    $('.cantons__status', detail).innerHTML = '<span class="state state--' + st + '">' + statusText[st] + '</span>';
-    var dds = $$('dd', detail);
-    dds[0].textContent = V; dds[1].textContent = V; dds[2].textContent = '[Erlass + Artikel einsetzen]';
+    $('.cantons__status', detail).innerHTML = '<span class="state state--' + r[0] + '">' + statusText[r[0]] + '</span>';
+    $('.cantons__rule', detail).textContent = r[1];
     $$('.ct', mapEl).forEach(function (b) { b.setAttribute('aria-pressed', 'false'); });
     if (btn) btn.setAttribute('aria-pressed', 'true');
   }
   if (mapEl) {
+    var first = null;
     cantons.forEach(function (c) {
-      var st = status[c[0]] || 'var';
+      var r = ruleOf(c[0]);
       var b = document.createElement('button');
       b.type = 'button';
-      b.className = 'ct ct--' + st;
+      b.className = 'ct ct--' + r[0];
       b.textContent = c[0];
       b.style.gridColumn = c[2];
       b.style.gridRow = c[3];
-      b.setAttribute('aria-label', c[1] + ': ' + statusText[st]);
-      b.setAttribute('aria-pressed', c[0] === 'GE' ? 'true' : 'false');
+      b.setAttribute('aria-label', c[1] + ': ' + statusText[r[0]]);
+      b.setAttribute('aria-pressed', 'false');
       b.addEventListener('click', function () { showCanton(c, b); });
       mapEl.appendChild(b);
+      if (c[0] === 'GE') first = [c, b];
     });
-    // Full table, alphabetical
+    if (first) showCanton(first[0], first[1]);
     var tbody = $('#canton-table tbody');
     cantons.slice().sort(function (a, b) { return a[1].localeCompare(b[1], 'de'); }).forEach(function (c) {
-      var st = status[c[0]] || 'var';
+      var r = ruleOf(c[0]);
       var tr = document.createElement('tr');
       tr.innerHTML = '<td><strong>' + c[1] + '</strong> <span class="mono">' + c[0] + '</span></td>' +
-        '<td><span class="state state--' + st + '">' + statusText[st] + '</span></td>' +
-        '<td class="todo">' + V + '</td>';
+        '<td><span class="state state--' + r[0] + '">' + statusText[r[0]] + '</span></td>' +
+        '<td>' + (rules[c[0]] ? r[1] : '–') + '</td>';
       tbody.appendChild(tr);
     });
   }

@@ -16,17 +16,19 @@ assets/img/             favicon.svg, og-image.svg (+ .png export)
 
 Run locally: `npx http-server .` and open http://localhost:8080.
 
-## Before publishing — mandatory
+## Sourcing rules
 
-Everything marked in the UI with **PRÜFEN**, **[zu verifizieren]**, **JJJJ** or red hatched text is a placeholder.
+- The site is information only. Signing happens exclusively on Campax:
+  https://act.campax.org/petitions/alkohol-ist-kein-gewohnliches-konsumgut-strengere-regeln-fur-die-schweiz
+  No form, no database, no signature counter.
+- Every number and factual claim links to its source (BAG, BFU, Sucht Schweiz, BAZG, Parliament,
+  Public Health Scotland, peer-reviewed studies) or to a reputable news outlet (NZZ, SRF, Beobachter, swissinfo).
+- Canton data in `assets/js/main.js` is copied verbatim from the BAG overview
+  "Zeitliche Verkaufseinschränkungen für Alkohol" (retrieved 3 Oct 2026).
+- All links were checked in October 2026. Re-check before major updates.
 
-- [ ] Verify every statistic against the original source (BAG / MonAM, BFS); add year and **direct** link. Currently links point to institution home pages.
-- [ ] Replace the schematic consumption trend (section 02) with the real BAG time series.
-- [ ] Verify cantonal night-sale rules (GE, FR, VD and all others) in `assets/js/main.js` → `status` and the detail fields.
-- [ ] Verify country facts (SE, SCO, LV, NO) and add research summaries only with citations.
-- [ ] EBG source and victim-support contacts in section 06.
-- [ ] Signing happens only on Campax: https://act.campax.org/petitions/alkohol-ist-kein-gewohnliches-konsumgut-strengere-regeln-fur-die-schweiz — the site collects no data. If a signature count is ever shown, take it from Campax; never invent one.
-- [ ] Copy the full wording of demand 10 and the justification from Campax into `index.html` / `petition.html`.
-- [ ] Complete Datenschutz (revDSG) and Impressum; name the responsible organisation.
+## Before publishing
+
+- [ ] Complete Datenschutz and Impressum; name the responsible organisation.
 - [ ] Self-host fonts (Inter, Inter Tight, IBM Plex Mono) instead of Google Fonts, or mention it in the privacy notice.
 - [ ] Replace `https://example.ch/` in Open Graph tags; regenerate `og-image.png` and the PDF after text changes.
